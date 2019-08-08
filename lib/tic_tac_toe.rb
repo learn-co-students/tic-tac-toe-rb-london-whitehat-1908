@@ -1,13 +1,57 @@
 WIN_COMBINATIONS = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [6, 4, 2]
-].freeze
+  [0,1,2], # Top row
+  [3,4,5],  # Middle row
+  [6,7,8],
+  [0,3,6],
+  [1,4,7],
+  [2,5,8],
+  [0,4,8],
+  [6,4,2]
+  # ETC, an array for each win combination
+]
+
+def position_taken?(board, index)
+  !(board[index].nil? || board[index] == " ")
+end
+
+
+def winner(board)
+  winningCondition = won?(board)
+  if (winningCondition != false)
+    board[winningCondition[0]]
+  end
+end
+
+
+def won?(board)
+  WIN_COMBINATIONS.each do |win|
+    if (board[win[0]] == board[win[1]]) && (board[win[1]] == board[win[2]]) && (board[win[0]] != " ") && (board[win[0]] != "")
+      return (win)
+    end
+  end
+  return false
+end
+
+
+def draw?(board)
+  (full?(board) && !won?(board))
+end
+
+
+def full?(board)
+  board.each do |item|
+    if !((item == "X") || (item == "O"))
+      return false
+    end
+  end
+  true
+end
+
+
+def over?(board)
+  return(won?(board) || draw?(board))
+end
+
 
 def play(board)
   turn(board) until over?(board)
@@ -28,26 +72,6 @@ end
 
 def valid_move?(board, index)
   index.between?(0, 8) && !position_taken?(board, index)
-end
-
-def won?(board)
-  WIN_COMBINATIONS.detect do |combo|
-    board[combo[0]] == board[combo[1]] &&
-      board[combo[1]] == board[combo[2]] &&
-      position_taken?(board, combo[0])
-  end
-end
-
-def full?(board)
-  board.all? { |token| token == 'X' || token == 'O' }
-end
-
-def draw?(board)
-  !won?(board) && full?(board)
-end
-
-def over?(board)
-  won?(board) || draw?(board)
 end
 
 def input_to_index(user_input)
