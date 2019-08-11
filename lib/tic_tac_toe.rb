@@ -1,4 +1,5 @@
 # Helper Methods
+#displays the tic tac toe board with the specific layout
 def display_board(board)
     puts " #{board[0]} | #{board[1]} | #{board[2]} "
     puts "-----------"
@@ -7,27 +8,27 @@ def display_board(board)
     puts " #{board[6]} | #{board[7]} | #{board[8]} "
   end
   
-  # input_to_index
+  # converts the users input into an index
   def input_to_index(user_input)
     user_input.to_i - 1
   end
   
-  # move
+  # defines the users specific move
   def move(board, index, current_player)
     board[index] = current_player
   end
   
-  # position_taken
+  #Checks to see if the positon is take
   def position_taken?(board, location)
     board[location] != " " && board[location] != ""
   end
   
-  # valid_move
+  # confirms if the move specific is valid
   def valid_move?(board, index)
     index.between?(0,8) && !position_taken?(board, index)
   end
   
-  # turn
+  # performs the users action and displays it on the burn
   def turn(board)
     puts "Please enter 1-9:"
     input = gets.strip
@@ -40,7 +41,7 @@ def display_board(board)
     end
   end
   
-  # turn_count
+  # keeps track of how many turns have passed so it can swap players
   def turn_count(board)
     turn_count = 0
   
@@ -53,12 +54,12 @@ def display_board(board)
     turn_count
   end
   
-  # current_player
+  # This uses the turn count to confirm which player should be selecting next
   def current_player(board)
     turn_count(board).even? ? "X" : turn_count(board).odd? ? "O" : "X"
   end
   
-  # Define your WIN_COMBINATIONS constant
+  # Win conditions to end the game are defined here as a constant
   WIN_COMBINATIONS = [
     [0,1,2],
     [0,3,6],
@@ -70,7 +71,7 @@ def display_board(board)
     [6,7,8]
   ]
   
-  # won
+  # checks for a win
   def won?(board)
   
     WIN_COMBINATIONS.each do |win_combo|
@@ -86,12 +87,12 @@ def display_board(board)
       return false
   end
   
-  # full
+  # checks if board is full
   def full?(board)
     board.all? { |i| i == "X" || i == "O" }
   end
   
-  # draw
+  # checks for a draw
   def draw?(board)
     if (full?(board) == false)
       return false
@@ -104,12 +105,12 @@ def display_board(board)
     end
   end
   
-  # over
+  # checks if the game is over
   def over?(board)
     won?(board) || draw?(board)
   end
   
-  # winner
+  # defines the winner either being "X" or "O"
   def winner(board)
     if (over?(board))
       if (board[won?(board)[0]] == "X")
@@ -121,7 +122,7 @@ def display_board(board)
     end
   end
   
-  # Define your play method below
+  # Keeps the game operating on a loop to cycle between players
   def play(board)
   
     while !over?(board)
